@@ -1,0 +1,7 @@
+name: cvl_asset
+dev_dependencies:
+  args:
+  crypto:
+  path:
+  sass:
+  watcher:

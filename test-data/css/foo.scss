@@ -1,0 +1,14 @@
+@import 'common';
+@import 'css/bar';
+
+.border {
+    border-color: $color;
+    margin: $margin / 2;
+    padding: $margin / 2;
+    background: asset-url('images/placeholder.png');
+}
+
+.content-navigation {
+    border-color: $color;
+    color: darken($color, 10%);
+}
