@@ -5,9 +5,9 @@ RUN apt-get update \
  && rm -fr /var/lib/apt/lists/*
 
 # Brotli
-RUN curl -L https://github.com/google/brotli/archive/v1.0.6.tar.gz \
+RUN curl -L https://github.com/google/brotli/archive/v1.0.7.tar.gz \
   | tar xzf -                                                      \
- && cd brotli-1.0.6                                                \
+ && cd brotli-1.0.7                                                \
  && make -j`nproc`                                                 \
  && mv bin/brotli /
 
