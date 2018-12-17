@@ -13,15 +13,17 @@ void main(List<String> args) {
     ..addSeparator("usage: cvl-asset [<flags>] <source> <destination>\n")
     ..addFlag('no-brotli', abbr: 'B', negatable: false)
     ..addFlag('help', abbr: 'h', negatable: false)
+    ..addOption('mount', abbr: 'm', defaultsTo: '/')
     ..addFlag('no-webp', abbr: 'W', negatable: false)
     ..addFlag('watch', abbr: 'w', negatable: false);
 
-  String source, destination;
+  String source, destination, mount;
 
   try {
     final result = parser.parse(args);
 
     brotli = !result['no-brotli'];
+    mount = result['mount'];
     watch = result['watch'] as bool;
     webp = !result['no-webp'];
 
@@ -58,7 +60,7 @@ void main(List<String> args) {
       return a.path.compareTo(b.path);
   });
 
-  run(source, destination, files);
+  run(source, destination, mount, files);
 
   if (watch) {
     DirectoryWatcher(source).events.listen((e) {
@@ -68,12 +70,12 @@ void main(List<String> args) {
 
       // FIXME We're re-running everything on file change
       //       and not actually detecting new files!
-      run(source, destination, files);
+      run(source, destination, mount, files);
     });
   }
 }
 
-void run(String source, String destination, List<File> files) {
+void run(String source, String destination, String mount, List<File> files) {
   Map<String, String> manifest = Map();
 
   for (final file in files) {
@@ -153,8 +155,7 @@ void run(String source, String destination, List<File> files) {
         break;
     }
 
-    // TODO Make the prefix user configurable?
-    manifest[path] = "/" + assetPath;
+    manifest[path] = mount + assetPath;
   }
 
   File(join(destination, 'manifest.json'))
