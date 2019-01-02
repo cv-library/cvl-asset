@@ -132,6 +132,7 @@ void run(String source, String destination, String mount, List<File> files) {
     switch (ext) {
       case '.css':
       case '.js':
+      case '.svg':
         if (brotli) {
           final brPath = assetPath + '.br';
 
