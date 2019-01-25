@@ -1,4 +1,4 @@
-FROM google/dart:2.0
+FROM google/dart:2.1
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends gcc libc6-dev make \
@@ -19,11 +19,12 @@ COPY main.dart /
 
 RUN dart --snapshot=cvl-asset main.dart
 
-FROM debian:stretch-slim
+FROM debian:buster-slim
 
 RUN apt-get update \
- && apt-get install -y --no-install-recommends webp \
- && rm -fr /var/lib/apt/lists/*
+ && apt-get install -y --no-install-recommends npm webp \
+ && rm -fr /var/lib/apt/lists/*                         \
+ && npm install -g autoprefixer@9.4.6 postcss-cli@6.1.1
 
 COPY --from=0 /brotli /cvl-asset /usr/lib/dart/bin/dart /bin/
 

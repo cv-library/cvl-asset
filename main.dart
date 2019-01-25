@@ -115,6 +115,13 @@ void run(String source, String destination, String mount, List<File> files) {
       deps.removeWhere((dep) => dep == path);
 
       bytes = Utf8Encoder().convert(css);
+
+      final hack = File('/tmp/hack.css');
+      hack.createSync(recursive: true);
+      hack.writeAsBytesSync(bytes, flush: true);
+
+      ProcessResult res = Process.runSync('postcss', ['/tmp/hack.css', '--no-map', '-u', 'autoprefixer']);
+      bytes = Utf8Encoder().convert(res.stdout);
     } else {
       bytes = file.readAsBytesSync();
     }
